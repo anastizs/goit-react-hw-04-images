@@ -1,13 +1,12 @@
-import PropTypes from 'prop-types';
-import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
-import css from './ImageGallery.module.css';
+import PropTypes from "prop-types";
+import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
+import css from "./ImageGallery.module.css";
 
 export const ImageGallery = ({ images }) => {
   return (
     <ul className={css.ImageGallery}>
-      {images.map(image => (
+      {images.map((image) => (
         <ImageGalleryItem
-          
           key={image.id}
           link={image.webformatURL}
           descr={image.tags}
@@ -23,5 +22,5 @@ ImageGallery.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
     })
-  )
+  ),
 };
