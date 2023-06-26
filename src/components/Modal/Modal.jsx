@@ -1,50 +1,40 @@
-import PropTypes from "prop-types"
-import { createPortal } from 'react-dom';
-import { Component } from 'react';
-import css from './Modal.module.css';
+import { createPortal } from "react-dom";
+import { useEffect } from "react";
+import PropTypes from "prop-types";
+import css from "./Modal.module.css";
 
-
-export class Modal extends Component {
-    // static propTypes = {
-    //     descr: PropTypes.string.isRequired,
-    //     link: PropTypes.string.isRequired,
-    //     onClose: PropTypes.func.isRequired,
-    // };
-
-    componentDidMount() {
-        window.addEventListener('keydown', this.handleKeydown);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeydown);
-    }
-
-    handleKeydown = e => {
-        if (e.code === 'Escape') {
-            this.props.onClose();
-        }
+export const Modal = ({ descr, link, onClose }) => {
+  useEffect(() => {
+    const handleKeydown = (e) => {
+      if (e.code === "Escape") {
+        onClose();
+      }
     };
-    handleBackdropClick = e => {
-        if (e.currentTarget === e.target) {
-            this.props.onClose();
-        }
-    };
+    window.addEventListener("keydown", handleKeydown);
 
-    render() {
-        const { link, descr } = this.props;
-        return createPortal(
-            <div className={css.Overlay} onClick={this.handleBackdropClick}>
-                <div className={css.Modal}>
-                    <img src={link} alt={descr} />
-                </div>
-            </div>,
-            document.getElementById('modal-root')
-        );
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  }, [onClose]);
+
+  const handleBackdropClick = (e) => {
+    if (e.currentTarget === e.target) {
+      onClose();
     }
-}
+  };
+
+  return createPortal(
+    <div className={css.Overlay} onClick={handleBackdropClick}>
+      <div className={css.Modal}>
+        <img src={link} alt={descr} />
+      </div>
+    </div>,
+    document.getElementById("modal-root")
+  );
+};
 
 Modal.propTypes = {
-    descr: PropTypes.any,
-    link: PropTypes.any,
-    onClose: PropTypes.func
-}
+  descr: PropTypes.any,
+  link: PropTypes.any,
+  onClose: PropTypes.func,
+};
